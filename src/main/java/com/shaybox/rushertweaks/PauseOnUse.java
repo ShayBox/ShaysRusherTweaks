@@ -11,7 +11,7 @@ import org.rusherhack.core.feature.IFeatureManager;
 import org.rusherhack.core.setting.BooleanSetting;
 
 @SuppressWarnings("unused")
-public class IEventListener implements EventListener {
+public class PauseOnUse implements EventListener {
 
     /* RusherHackAPI & Modules */
     private final IFeatureManager<IModule> moduleManager = RusherHackAPI.getModuleManager();
@@ -26,7 +26,7 @@ public class IEventListener implements EventListener {
     private final BooleanSetting pauseElytraFly = new BooleanSetting("PauseOnUse", "Pause ElytraFly While Eating", false);
     private final BooleanSetting pauseRotationLock = new BooleanSetting("PauseOnUse", "Pause RotationLock While Eating", false);
 
-    public IEventListener() {
+    public PauseOnUse() {
 //        this.pauseOnEat.addSubSettings(this.pauseAutoWalk, this.pauseElytraFly, this.pauseRotationLock);
 //        this.autoEat.registerSettings(this.pauseOnEat);
         this.autoWalk.registerSettings(this.pauseAutoWalk);

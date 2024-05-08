@@ -9,16 +9,19 @@ import org.rusherhack.core.event.listener.EventListener;
 public class Main extends Plugin {
 
 	private final IEventBus eventBus = RusherHackAPI.getEventBus();
-	private final EventListener eventListener = new IEventListener();
+	private final EventListener nightVision = new NightVision();
+	private final EventListener pauseOnUse = new PauseOnUse();
 
 	@Override
 	public void onLoad() {
-		eventBus.subscribe(eventListener);
+		eventBus.subscribe(nightVision);
+		eventBus.subscribe(pauseOnUse);
 	}
 	
 	@Override
 	public void onUnload() {
-		eventBus.unsubscribe(eventListener);
+		eventBus.unsubscribe(nightVision);
+		eventBus.unsubscribe(pauseOnUse);
 	}
 	
 }

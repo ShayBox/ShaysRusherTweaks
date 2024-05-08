@@ -2,11 +2,14 @@
   "Plugin-Class": "com.shaybox.rushertweaks.Main",
   "Name": "Shays Rusher Tweaks",
   "Version": "${version}",
-  "Description": "W.I.P",
+  "Description": "My personal RusherHack tweaks plugin",
   "Authors": [
     "ShayBox"
   ],
   "Minecraft-Versions": [
-    "1.20.4"
+    "1.20.4",
+    "1.20.3",
+    "1.20.2",
+    "1.20.1"
   ]
 }
