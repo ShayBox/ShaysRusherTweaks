@@ -1,0 +1,12 @@
+{
+  "Plugin-Class": "com.shaybox.rushertweaks.Main",
+  "Name": "Shays Rusher Tweaks",
+  "Version": "${version}",
+  "Description": "W.I.P",
+  "Authors": [
+    "ShayBox"
+  ],
+  "Minecraft-Versions": [
+    "1.20.4"
+  ]
+}
