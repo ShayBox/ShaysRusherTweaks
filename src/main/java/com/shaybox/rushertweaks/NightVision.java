@@ -22,6 +22,8 @@ public class NightVision implements EventListener {
     /* Custom Settings */
     private final BooleanSetting nightVisionSetting = new BooleanSetting("NightVision", "Client Side Night Vision Effect", false);
 
+    private final MobEffectInstance nightVisionEffect = new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 0, true, false, false);
+
     public NightVision() {
         this.fullBright.registerSettings(this.nightVisionSetting);
     }
@@ -31,24 +33,18 @@ public class NightVision implements EventListener {
         return this.fullBright.isToggled() || this.nightVisionSetting.getValue();
     }
 
-    boolean isApplied = false;
+    private boolean isApplied = false;
 
     @Subscribe
     private void onUpdate(EventPlayerUpdate event) {
         LocalPlayer player = event.getPlayer();
+        boolean hasNightVision = player.hasEffect(MobEffects.NIGHT_VISION);
         boolean isFullBright = this.fullBright.isToggled();
         boolean isNightVision = this.nightVisionSetting.getValue();
 
-        if (!isApplied && (isFullBright && isNightVision)) {
+        if (!hasNightVision && (isFullBright && isNightVision)) {
             isApplied = true;
-            player.addEffect(new MobEffectInstance(
-                    MobEffects.NIGHT_VISION,
-                    -1,
-                    1,
-                    true,
-                    false,
-                    false
-            ));
+            player.addEffect(this.nightVisionEffect);
         } else if (isApplied && (!isFullBright || !isNightVision)) {
             isApplied = false;
             player.removeEffect(MobEffects.NIGHT_VISION);
