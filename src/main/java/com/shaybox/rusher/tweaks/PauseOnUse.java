@@ -1,4 +1,4 @@
-package com.shaybox.rushertweaks;
+package com.shaybox.rusher.tweaks;
 
 import net.minecraft.client.player.LocalPlayer;
 import org.rusherhack.client.api.RusherHackAPI;
@@ -26,6 +26,7 @@ public class PauseOnUse implements EventListener {
     private final BooleanSetting pauseElytraFly = new BooleanSetting("PauseOnUse", "Pause ElytraFly While Eating", false);
     private final BooleanSetting pauseRotationLock = new BooleanSetting("PauseOnUse", "Pause RotationLock While Eating", false);
 
+    /* Initialize */
     public PauseOnUse() {
 //        this.pauseOnEat.addSubSettings(this.pauseAutoWalk, this.pauseElytraFly, this.pauseRotationLock);
 //        this.autoEat.registerSettings(this.pauseOnEat);

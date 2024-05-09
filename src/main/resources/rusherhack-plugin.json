@@ -1,5 +1,5 @@
 {
-  "Plugin-Class": "com.shaybox.rushertweaks.Main",
+  "Plugin-Class": "com.shaybox.rusher.Main",
   "Name": "Shays Rusher Tweaks",
   "Version": "${version}",
   "Description": "My personal RusherHack tweaks plugin",

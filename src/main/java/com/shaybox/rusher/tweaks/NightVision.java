@@ -1,4 +1,4 @@
-package com.shaybox.rushertweaks;
+package com.shaybox.rusher.tweaks;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -22,8 +22,10 @@ public class NightVision implements EventListener {
     /* Custom Settings */
     private final BooleanSetting nightVisionSetting = new BooleanSetting("NightVision", "Client Side Night Vision Effect", false);
 
+    /* Custom Effects */
     private final MobEffectInstance nightVisionEffect = new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 0, true, false, false);
 
+    /* Initialize */
     public NightVision() {
         this.fullBright.registerSettings(this.nightVisionSetting);
     }
