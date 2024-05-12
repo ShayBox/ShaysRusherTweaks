@@ -15,7 +15,7 @@ import org.rusherhack.core.setting.BooleanSetting;
 @SuppressWarnings("unused")
 public class NightVision implements EventListener {
 
-    /* RusherHackAPI & Modules */
+    /* RusherHackAPI Managers & Modules */
     private final IFeatureManager<IModule> moduleManager = RusherHackAPI.getModuleManager();
     private final ToggleableModule fullBright = (ToggleableModule) moduleManager.getFeature("FullBright").orElseThrow();
 
@@ -25,6 +25,9 @@ public class NightVision implements EventListener {
     /* Custom Effects */
     private final MobEffectInstance nightVisionEffect = new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 0, true, false, false);
 
+    /* Previous State */
+    private boolean isApplied = false;
+
     /* Initialize */
     public NightVision() {
         this.fullBright.registerSettings(this.nightVisionSetting);
@@ -32,10 +35,8 @@ public class NightVision implements EventListener {
 
     @Override
     public boolean isListening() {
-        return this.fullBright.isToggled() || this.nightVisionSetting.getValue();
+        return this.nightVisionSetting.getValue() || this.isApplied;
     }
-
-    private boolean isApplied = false;
 
     @Subscribe
     private void onUpdate(EventPlayerUpdate event) {

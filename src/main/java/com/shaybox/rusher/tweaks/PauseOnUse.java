@@ -26,6 +26,12 @@ public class PauseOnUse implements EventListener {
     private final BooleanSetting pauseElytraFly = new BooleanSetting("PauseOnUse", "Pause ElytraFly While Eating", false);
     private final BooleanSetting pauseRotationLock = new BooleanSetting("PauseOnUse", "Pause RotationLock While Eating", false);
 
+    /* Previous State */
+    private boolean isPaused = false;
+    private boolean lastAutoWalk = this.autoWalk.isToggled();
+    private boolean lastElytraFly = this.elytraFly.isToggled();
+    private boolean lastRotationLock = this.rotationLock.isToggled();
+
     /* Initialize */
     public PauseOnUse() {
 //        this.pauseOnEat.addSubSettings(this.pauseAutoWalk, this.pauseElytraFly, this.pauseRotationLock);
@@ -38,38 +44,33 @@ public class PauseOnUse implements EventListener {
     @Override
     public boolean isListening() {
 //        return this.autoEat.isToggled();
-        return this.pauseAutoWalk.getValue() || this.pauseElytraFly.getValue() || this.pauseRotationLock.getValue();
+        return this.pauseAutoWalk.getValue() || this.pauseElytraFly.getValue() || this.pauseRotationLock.getValue() || this.isPaused;
     }
-
-    /* Previous State */
-    private boolean isPaused = false;
-    private boolean lastAutoWalk = this.autoWalk.isToggled();
-    private boolean lastElytraFly = this.elytraFly.isToggled();
-    private boolean lastRotationLock = this.rotationLock.isToggled();
 
     @Subscribe
     private void onUpdate(EventPlayerUpdate event) {
         LocalPlayer player = event.getPlayer();
-        boolean usingItem = player.isUsingItem();
 
-        if (usingItem && !isPaused) {
-            isPaused = true;
+        if (player.isUsingItem()) {
+            if (!isPaused) {
+                isPaused = true;
 
-            if (this.pauseAutoWalk.getValue()) {
-                lastAutoWalk = this.autoWalk.isToggled();
-                this.autoWalk.setToggled(false);
+                if (this.pauseAutoWalk.getValue()) {
+                    lastAutoWalk = this.autoWalk.isToggled();
+                    this.autoWalk.setToggled(false);
+                }
+
+                if (this.pauseElytraFly.getValue()) {
+                    lastElytraFly = this.elytraFly.isToggled();
+                    this.elytraFly.setToggled(false);
+                }
+
+                if (this.pauseRotationLock.getValue()) {
+                    lastRotationLock = this.rotationLock.isToggled();
+                    this.rotationLock.setToggled(false);
+                }
             }
-
-            if (this.pauseElytraFly.getValue()) {
-                lastElytraFly = this.elytraFly.isToggled();
-                this.elytraFly.setToggled(false);
-            }
-
-            if (this.pauseRotationLock.getValue()) {
-                lastRotationLock = this.rotationLock.isToggled();
-                this.rotationLock.setToggled(false);
-            }
-        } else if (!usingItem && isPaused) {
+        } else if (isPaused) {
             isPaused = false;
 
             if (this.pauseAutoWalk.getValue()) {
@@ -83,10 +84,6 @@ public class PauseOnUse implements EventListener {
             if (this.pauseRotationLock.getValue()) {
                 this.rotationLock.setToggled(this.lastRotationLock);
             }
-        } else if (!usingItem) {
-            lastAutoWalk = this.autoWalk.isToggled();
-            lastElytraFly = this.elytraFly.isToggled();
-            lastRotationLock = this.rotationLock.isToggled();
         }
     }
 

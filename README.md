@@ -7,3 +7,4 @@ My personal RusherHack tweaks plugin
 - PauseOnUse (AutoWalk/ElytraFly/RotationLock) - Pause modules while using/eating
 - NightVision (FullBright) - Client Side Effect
 - Durability101 (Armor HUD) - Durability101 Mod
+- RepairPriority (AutoArmor) - Prioritize low durability armor with mending

@@ -8,6 +8,8 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import org.rusherhack.client.api.RusherHackAPI;
 import org.rusherhack.client.api.events.render.EventRender2D;
 import org.rusherhack.client.api.feature.hud.HudElement;
@@ -45,9 +47,11 @@ public class Durability101 implements EventListener {
 
     /* Custom Settings */
     private final BooleanSetting durability101 = new BooleanSetting("Durability101", "Durability101 Mod for Armor HUD", false);
+    private final BooleanSetting unbreaking = new BooleanSetting("Unbreaking", "Estimates Unbreaking Durability", false);
 
     /* Initialize */
     public Durability101() {
+        this.durability101.addSubSettings(this.unbreaking);
         this.armor.registerSettings(this.durability101);
     }
 
@@ -61,9 +65,7 @@ public class Durability101 implements EventListener {
         Stage stage = event.getStage();
         if (this.minecraft.screen == this.hudEditorScreen) {
             if (stage != Stage.POST) return;
-        } else {
-            if (stage != Stage.ON) return;
-        }
+        } else if (stage != Stage.ON) return;
 
         LocalPlayer player = this.minecraft.player;
         if (player == null || debugOverlay.showDebugScreen()) {
@@ -72,14 +74,15 @@ public class Durability101 implements EventListener {
 
         /* Armor HUD Element: Position, Size, and Scale */
         float scale = (float) this.armor.getScale();
-        double startX = (this.armor.getStartX() * 2) / scale, startY = (this.armor.getStartY() * 2) / scale;
-        double width = (this.armor.getScaledWidth() * 2) / scale, height = (this.armor.getScaledHeight() * 2) / scale;
-        double fourWidth = width / 4, fourHeight = height / 4, halfWidth = width / 2, halfHeight = height / 2;
+        double startX = this.armor.getStartX(), startY = this.armor.getStartY();
+        double width = this.armor.getWidth(), height = this.armor.getHeight();
+        double halfWidth = width / 2, halfHeight = height / 2;
 
         /* Matrix Stack */
         PoseStack matrixStack = event.getMatrixStack();
         matrixStack.pushPose();
-        matrixStack.scale(0.5F * scale, 0.5F * scale, 0.5F * scale);
+        matrixStack.translate(startX, startY, 0);
+        matrixStack.scale(scale * 0.5F, scale * 0.5F, 0);
 
         /* Font Renderer */
         IFontRenderer fontRenderer = this.armor.getFontRenderer();
@@ -100,53 +103,38 @@ public class Durability101 implements EventListener {
             int maxDamage = itemStack.getMaxDamage();
             int damage = itemStack.getDamageValue();
             int color = itemStack.getBarColor();
+            int unbreaking = 0;
+            if (this.unbreaking.getValue()) {
+                unbreaking = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, itemStack);
+            }
 
             /* Text Offset */
-            String text = format(maxDamage - damage);
+            String text = format((maxDamage - damage) * (unbreaking + 1));
             double textWidth = fontRenderer.getStringWidth(text);
+            double textOffset = 1 + textWidth / 2 - textWidth;
 
             /* Axis Offsets */
-            double x, y, slotOffset = 0.5 + slot;
+            double x = 0, y = 0;
             if (this.axis.getDisplayValue().equals("X")) {
-                /* Horizontal Offset */
-                int[] offsets = {10, 8, 6, 4};
-                int xOffset = offsets[slot];
+                x += (slot * 38) + textOffset + 16;
+                y += 18;
 
-                /* AutoAdjust Vertical Offset */
-                int autoAdjustOffset = 0;
                 if (this.hotbarLock.getValue() && this.autoAdjust.getValue()) {
-                    /* RusherHack Behavior */
                     if (player.showVehicleHealth() && player.getVehicle() instanceof LivingEntity living) {
-                        if (living.getMaxHealth() > 20) autoAdjustOffset -= 20;
+                        if (living.getMaxHealth() > 20) y -= 20;
                     } else if (player.isCreative()) {
-                        autoAdjustOffset += 34;
+                        y += 34;
                     } else if (player.isUnderWater()) {
-                        autoAdjustOffset -= 20;
+                        y -= 20;
                     }
-                    /* Fixed Behavior */
-//                if (player.showVehicleHealth() && player.getVehicle() instanceof LivingEntity living) {
-//                    float maxHealth = living.getMaxHealth();
-//                    int rows = (int) Math.ceil(maxHealth / 20);
-//                    autoAdjustOffset -= 20 * rows;
-//                }
-//
-//                if (player.isCreative()) {
-//                    autoAdjustOffset += 34;
-//                } else if (player.isUnderWater()) {
-//                    autoAdjustOffset -= 20;
-//                }
                 }
 
-                x = startX + (fourWidth * slotOffset) - xOffset;
-                y = startY + halfHeight + autoAdjustOffset;
-            } else {
-                int xOffset = 10;
                 if (!this.durability.getDisplayValue().equals("Off")) {
-                    xOffset += 20;
+                    y += 20;
                 }
-
-                x = startX + halfWidth - xOffset;
-                y = startY + (fourHeight * slotOffset) + (slot * 2);
+            } else {
+                x += textOffset + 16;
+                y += (slot * 38) + 18;
             }
 
             fontRenderer.drawString(text, x, y, color, true);
