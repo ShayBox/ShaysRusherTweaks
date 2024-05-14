@@ -13,6 +13,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import org.rusherhack.client.api.RusherHackAPI;
 import org.rusherhack.client.api.events.render.EventRender2D;
 import org.rusherhack.client.api.feature.hud.HudElement;
+import org.rusherhack.client.api.feature.hud.TextHudElement;
 import org.rusherhack.client.api.render.font.IFontRenderer;
 import org.rusherhack.client.api.system.IHudManager;
 import org.rusherhack.client.api.ui.theme.IThemeManager;
@@ -26,7 +27,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
-@SuppressWarnings("unused")
 public class Durability101 implements EventListener {
 
     /* Minecraft & Screens */
@@ -49,6 +49,9 @@ public class Durability101 implements EventListener {
     private final BooleanSetting durability101 = new BooleanSetting("Durability101", "Durability101 Mod for Armor HUD", false);
     private final BooleanSetting unbreaking = new BooleanSetting("Unbreaking", "Estimates Unbreaking Durability", false);
 
+    /* Temporary */
+    private final TextHudElement watermark = (TextHudElement) hudManager.getFeature("Watermark").orElseThrow();
+
     /* Initialize */
     public Durability101() {
         this.durability101.addSubSettings(this.unbreaking);
@@ -60,6 +63,7 @@ public class Durability101 implements EventListener {
         return this.armor.isToggled() && this.durability101.getValue();
     }
 
+    @SuppressWarnings("unused")
     @Subscribe(priority = -10000, stage = Stage.ALL)
     private void onUpdate(EventRender2D event) {
         Stage stage = event.getStage();
@@ -76,7 +80,6 @@ public class Durability101 implements EventListener {
         float scale = (float) this.armor.getScale();
         double startX = this.armor.getStartX(), startY = this.armor.getStartY();
         double width = this.armor.getWidth(), height = this.armor.getHeight();
-        double halfWidth = width / 2, halfHeight = height / 2;
 
         /* Matrix Stack */
         PoseStack matrixStack = event.getMatrixStack();
@@ -119,7 +122,8 @@ public class Durability101 implements EventListener {
                 x += (slot * 38) + textOffset + 16;
                 y += 18;
 
-                if (this.hotbarLock.getValue() && this.autoAdjust.getValue()) {
+                boolean isStable203 = this.watermark.getText().startsWith("rusherhack v2.0.3");
+                if (isStable203 && this.hotbarLock.getValue() && this.autoAdjust.getValue()) {
                     if (player.showVehicleHealth() && player.getVehicle() instanceof LivingEntity living) {
                         if (living.getMaxHealth() > 20) y -= 20;
                     } else if (player.isCreative()) {
