@@ -10,12 +10,11 @@ import org.rusherhack.core.event.subscribe.Subscribe;
 import org.rusherhack.core.feature.IFeatureManager;
 import org.rusherhack.core.setting.BooleanSetting;
 
-@SuppressWarnings("unused")
 public class PauseOnUse implements EventListener {
 
     /* RusherHackAPI & Modules */
     private final IFeatureManager<IModule> moduleManager = RusherHackAPI.getModuleManager();
-    private final ToggleableModule autoEat = (ToggleableModule) moduleManager.getFeature("AutoEat").orElseThrow();
+//    private final ToggleableModule autoEat = (ToggleableModule) moduleManager.getFeature("AutoEat").orElseThrow();
     private final ToggleableModule autoWalk = (ToggleableModule) moduleManager.getFeature("AutoWalk").orElseThrow();
     private final ToggleableModule elytraFly = (ToggleableModule) moduleManager.getFeature("ElytraFly").orElseThrow();
     private final ToggleableModule rotationLock = (ToggleableModule) moduleManager.getFeature("RotationLock").orElseThrow();
@@ -48,7 +47,8 @@ public class PauseOnUse implements EventListener {
     }
 
     @Subscribe
-    private void onUpdate(EventPlayerUpdate event) {
+    @SuppressWarnings("unused")
+    private void onPlayerUpdate(EventPlayerUpdate event) {
         LocalPlayer player = event.getPlayer();
 
         if (player.isUsingItem()) {

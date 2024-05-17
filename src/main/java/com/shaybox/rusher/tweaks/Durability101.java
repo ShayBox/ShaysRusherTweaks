@@ -65,7 +65,7 @@ public class Durability101 implements EventListener {
 
     @SuppressWarnings("unused")
     @Subscribe(priority = -10000, stage = Stage.ALL)
-    private void onUpdate(EventRender2D event) {
+    private void onRender2D(EventRender2D event) {
         Stage stage = event.getStage();
         if (this.minecraft.screen == this.hudEditorScreen) {
             if (stage != Stage.POST) return;
@@ -122,7 +122,7 @@ public class Durability101 implements EventListener {
                 x += (slot * 38) + textOffset + 16;
                 y += 18;
 
-                boolean isStable203 = this.watermark.getText().startsWith("rusherhack v2.0.3");
+                boolean isStable203 = this.watermark.getText().endsWith("v2.0.3");
                 if (isStable203 && this.hotbarLock.getValue() && this.autoAdjust.getValue()) {
                     if (player.showVehicleHealth() && player.getVehicle() instanceof LivingEntity living) {
                         if (living.getMaxHealth() > 20) y -= 20;

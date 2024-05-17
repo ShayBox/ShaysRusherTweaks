@@ -12,7 +12,6 @@ import org.rusherhack.core.event.subscribe.Subscribe;
 import org.rusherhack.core.feature.IFeatureManager;
 import org.rusherhack.core.setting.BooleanSetting;
 
-@SuppressWarnings("unused")
 public class NightVision implements EventListener {
 
     /* RusherHackAPI Managers & Modules */
@@ -39,7 +38,8 @@ public class NightVision implements EventListener {
     }
 
     @Subscribe
-    private void onUpdate(EventPlayerUpdate event) {
+    @SuppressWarnings("unused")
+    private void onPlayerUpdate(EventPlayerUpdate event) {
         LocalPlayer player = event.getPlayer();
         boolean hasNightVision = player.hasEffect(MobEffects.NIGHT_VISION);
         boolean isFullBright = this.fullBright.isToggled();
