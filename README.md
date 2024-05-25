@@ -10,3 +10,4 @@ My personal RusherHack tweaks plugin
 - RepairPriority (AutoArmor) - Prioritize low durability armor with mending
 - GoldenPriority (AutoArmor) - Prioritize one piece of golden armor for piglins
 - Priority Binds (AutoArmor) - Key binds for priority setting toggles
+- Lightning (KillEffects) - Show a client side lightning effect when a player dies

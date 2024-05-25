@@ -85,8 +85,8 @@ public class ArmorPriority implements EventListener {
         );
     }
 
-    @Subscribe
     @SuppressWarnings("unused")
+    @Subscribe
     private void onUpdate(EventUpdate event) {
         if (minecraft.screen != null) return;
 
@@ -145,7 +145,7 @@ public class ArmorPriority implements EventListener {
 
                                 int itemDamage = itemStack.getDamageValue();
                                 int armorDamage = armorStack.getDamageValue();
-                                if (itemDamage > armorDamage) swapSlotId(player, slot, armorSlotId);
+                                if (itemDamage > armorDamage) swapSlotArmorId(slot, armorSlotId);
                             });
                 }
             }
@@ -153,10 +153,10 @@ public class ArmorPriority implements EventListener {
             if (prioritizeGolden) {
                 this.repairPriority.setValue(false);
 
-                for (Item goldArmor : this.goldenArmorPriority)
+                for (Item goldenArmor : this.goldenArmorPriority)
                     player.inventoryMenu.slots.stream()
-                            .filter(slot -> slot.getItem().getItem() instanceof Equipable e && e == goldArmor)
-                            .filter(slot -> { /* Only one piece of gold armor */
+                            .filter(slot -> slot.getItem().getItem() instanceof Equipable e && e == goldenArmor)
+                            .filter(slot -> { /* Only one piece of golden armor */
                                 for (Item item : this.goldenArmorPriority)
                                     if (inventory.armor.stream().map(ItemStack::getItem).toList().contains(item))
                                         return false;
@@ -166,7 +166,7 @@ public class ArmorPriority implements EventListener {
                                 Equipable equipable = (Equipable) slot.getItem().getItem();
                                 EquipmentSlot equipmentSlot = equipable.getEquipmentSlot();
                                 int armorSlotId = InventoryUtils.getInventorySlot(equipmentSlot);
-                                this.swapSlotId(player, slot, armorSlotId);
+                                this.swapSlotArmorId(slot, armorSlotId);
                             });
             }
         } else if (isPaused) {
@@ -175,7 +175,7 @@ public class ArmorPriority implements EventListener {
         }
     }
 
-    private void swapSlotId(LocalPlayer player, Slot slot, int armorSlotId) {
+    private void swapSlotArmorId(Slot slot, int armorSlotId) {
         InventoryUtils.clickSlot(slot.index, false);
         InventoryUtils.clickSlot(armorSlotId, false);
         InventoryUtils.clickSlot(slot.index, false);
