@@ -24,7 +24,7 @@ public class KillEffects extends ToggleableModule {
     /* Minecraft */
     private final Minecraft minecraft = Minecraft.getInstance();
 
-    /* RusherHackAPI Managers & Settings */
+    /* RusherHackAPI & Settings */
     private final BooleanSetting self = new BooleanSetting("Self", "Only when you kill", false);
 
     /* Previous State */
@@ -45,7 +45,7 @@ public class KillEffects extends ToggleableModule {
             assert this.minecraft.level != null;
 
             DamageSource source = damagePacket.getSource(this.minecraft.level);
-            if (!source.is(DamageTypes.PLAYER_ATTACK)) return;
+            if (!source.is(DamageTypes.PLAYER_ATTACK) && !source.is(DamageTypes.PLAYER_EXPLOSION)) return;
 
             Entity entity = this.minecraft.level.getEntity(damagePacket.entityId());
             if (entity instanceof Player) {
