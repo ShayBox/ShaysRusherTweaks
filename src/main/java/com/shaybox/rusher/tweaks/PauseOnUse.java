@@ -46,32 +46,32 @@ public class PauseOnUse implements EventListener {
         return this.pauseAutoWalk.getValue() || this.pauseElytraFly.getValue() || this.pauseRotationLock.getValue() || this.isPaused;
     }
 
-    @Subscribe
     @SuppressWarnings("unused")
+    @Subscribe
     private void onPlayerUpdate(EventPlayerUpdate event) {
         LocalPlayer player = event.getPlayer();
 
         if (player.isUsingItem()) {
-            if (!isPaused) {
-                isPaused = true;
+            if (!this.isPaused) {
+                this.isPaused = true;
 
                 if (this.pauseAutoWalk.getValue()) {
-                    lastAutoWalk = this.autoWalk.isToggled();
+                    this.lastAutoWalk = this.autoWalk.isToggled();
                     this.autoWalk.setToggled(false);
                 }
 
                 if (this.pauseElytraFly.getValue()) {
-                    lastElytraFly = this.elytraFly.isToggled();
+                    this.lastElytraFly = this.elytraFly.isToggled();
                     this.elytraFly.setToggled(false);
                 }
 
                 if (this.pauseRotationLock.getValue()) {
-                    lastRotationLock = this.rotationLock.isToggled();
+                    this.lastRotationLock = this.rotationLock.isToggled();
                     this.rotationLock.setToggled(false);
                 }
             }
-        } else if (isPaused) {
-            isPaused = false;
+        } else if (this.isPaused) {
+            this.isPaused = false;
 
             if (this.pauseAutoWalk.getValue()) {
                 this.autoWalk.setToggled(this.lastAutoWalk);

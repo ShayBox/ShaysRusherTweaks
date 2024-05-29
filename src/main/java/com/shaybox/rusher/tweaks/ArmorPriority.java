@@ -1,5 +1,6 @@
 package com.shaybox.rusher.tweaks;
 
+import com.shaybox.rusher.Main;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -29,8 +30,6 @@ import org.rusherhack.core.setting.BooleanSetting;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class ArmorPriority implements EventListener {
 
@@ -90,20 +89,9 @@ public class ArmorPriority implements EventListener {
     private void onUpdate(EventUpdate event) {
         if (minecraft.screen != null) return;
 
-        handleKey(this.elytraPriorityBind::getValue, this.isElytraDown, (value) -> this.isElytraDown = value, this.elytraPriority::getValue, this.elytraPriority::setValue);
-        handleKey(this.repairPriorityBind::getValue, this.isRepairDown, (value) -> this.isRepairDown = value, this.repairPriority::getValue, this.repairPriority::setValue);
-        handleKey(this.goldenPriorityBind::getValue, this.isGoldenDown, (value) -> this.isGoldenDown = value, this.goldenPriority::getValue, this.goldenPriority::setValue);
-    }
-
-    private void handleKey(Supplier<IKey> key, boolean isDown, Consumer<Boolean> setIsDown, Supplier<Boolean> getPriority, Consumer<Boolean> setPriority) {
-        if (key.get().isKeyDown()) {
-            if (!isDown) {
-                setIsDown.accept(true);
-                setPriority.accept(!getPriority.get());
-            }
-        } else {
-            setIsDown.accept(false);
-        }
+        Main.handleKey(this.elytraPriorityBind::getValue, this.isElytraDown, (value) -> this.isElytraDown = value, this.elytraPriority::getValue, this.elytraPriority::setValue);
+        Main.handleKey(this.repairPriorityBind::getValue, this.isRepairDown, (value) -> this.isRepairDown = value, this.repairPriority::getValue, this.repairPriority::setValue);
+        Main.handleKey(this.goldenPriorityBind::getValue, this.isGoldenDown, (value) -> this.isGoldenDown = value, this.goldenPriority::getValue, this.goldenPriority::setValue);
     }
 
     @Subscribe

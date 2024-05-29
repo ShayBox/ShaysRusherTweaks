@@ -3,11 +3,28 @@
 
 My personal RusherHack tweaks plugin
 
-## Features
-- PauseOnUse (AutoWalk/ElytraFly/RotationLock) - Pause modules while using/eating
-- NightVision (FullBright) - Client Side Effect
-- Durability101 (Armor HUD) - Durability101 Mod
-- RepairPriority (AutoArmor) - Prioritize low durability armor with mending
-- GoldenPriority (AutoArmor) - Prioritize one piece of golden armor for piglins
-- Priority Binds (AutoArmor) - Key binds for priority setting toggles
-- Lightning (KillEffects) - Show a client side lightning effect when a player dies
+## Modules
+- KillEffects - Shows a client side lightning strike where players die (Requested by 0x85)
+
+## Tweaks
+- AutoArmor:
+  - RepairPriority - Prioritize low durability armor with mending
+  - GoldenPriority - Prioritize one piece of golden armor for piglins
+  - PriorityBinds - Key binds for priority setting toggles
+- AutoWalk/ElytraFly/RotationLock:
+  - PauseOnUse - Pause modules while using/eating
+  - AutoRestart - Automatically restart **packet** fly if your speed drops (Requested by _0lw)
+- Armor HUD:
+  - Durability101 - Durability101 Mod
+- FullBright:
+  - NightVision - Client side night vision effect (for shaders)
+
+## Notes:
+- **Warning** ElytraFly AutoRestart takes control of your ElytraFly! You may die!
+- It is recommended to bind it to a different key so that you can toggle it separately.
+- Do **NOT** leave your computer, use AutoTotem, wear gold armor, and set beds or pearls!
+
+## Install:
+- [Download]
+- Move to `.minecraft/rusherhack/plugins` (Create)
+- Add `-Drusherhack.enablePlugins=true` to Java Arguments
