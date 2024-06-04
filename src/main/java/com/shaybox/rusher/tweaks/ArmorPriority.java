@@ -94,8 +94,8 @@ public class ArmorPriority implements EventListener {
         Main.handleKey(this.goldenPriorityBind::getValue, this.isGoldenDown, (value) -> this.isGoldenDown = value, this.goldenPriority::getValue, this.goldenPriority::setValue);
     }
 
-    @Subscribe
     @SuppressWarnings("unused")
+    @Subscribe
     private void onPlayerUpdate(EventPlayerUpdate event) {
         LocalPlayer player = event.getPlayer();
         Inventory inventory = player.getInventory();
@@ -125,7 +125,7 @@ public class ArmorPriority implements EventListener {
                     player.inventoryMenu.slots.stream()
                             .filter(slot -> slot.getItem().getItem() instanceof Equipable e && e.getEquipmentSlot() == equipmentSlot)
                             .filter(slot -> EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, slot.getItem()) > 0)
-                            .min(Comparator.comparingInt(slot -> slot.getItem().getDamageValue()))
+                            .max(Comparator.comparingInt(slot -> slot.getItem().getDamageValue()))
                             .ifPresent(slot -> {
                                 Slot armorSlot = player.inventoryMenu.getSlot(armorSlotId);
                                 ItemStack armorStack = armorSlot.getItem();

@@ -14,6 +14,7 @@ import org.rusherhack.client.api.RusherHackAPI;
 import org.rusherhack.client.api.events.render.EventRender2D;
 import org.rusherhack.client.api.feature.hud.HudElement;
 import org.rusherhack.client.api.feature.hud.TextHudElement;
+import org.rusherhack.client.api.render.IRenderer2D;
 import org.rusherhack.client.api.render.font.IFontRenderer;
 import org.rusherhack.client.api.system.IHudManager;
 import org.rusherhack.client.api.ui.theme.IThemeManager;
@@ -22,6 +23,7 @@ import org.rusherhack.core.event.stage.Stage;
 import org.rusherhack.core.event.subscribe.Subscribe;
 import org.rusherhack.core.setting.BooleanSetting;
 import org.rusherhack.core.setting.EnumSetting;
+import org.rusherhack.core.setting.NumberSetting;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -48,13 +50,14 @@ public class Durability101 implements EventListener {
     /* Custom Settings */
     private final BooleanSetting durability101 = new BooleanSetting("Durability101", "Durability101 Mod for Armor HUD", false);
     private final BooleanSetting unbreaking = new BooleanSetting("Unbreaking", "Estimates Unbreaking Durability", false);
+    private final NumberSetting<Integer> yOffset = new NumberSetting<>("Y Offset", "Manual Y Offset", 0, -15, 15);
 
     /* Temporary */
     private final TextHudElement watermark = (TextHudElement) hudManager.getFeature("Watermark").orElseThrow();
 
     /* Initialize */
     public Durability101() {
-        this.durability101.addSubSettings(this.unbreaking);
+        this.durability101.addSubSettings(this.unbreaking, this.yOffset);
         this.armor.registerSettings(this.durability101);
     }
 
@@ -81,15 +84,16 @@ public class Durability101 implements EventListener {
         double startX = this.armor.getStartX(), startY = this.armor.getStartY();
         double width = this.armor.getWidth(), height = this.armor.getHeight();
 
-        /* Matrix Stack */
-        PoseStack matrixStack = event.getMatrixStack();
-        matrixStack.pushPose();
-        matrixStack.translate(startX, startY, 0);
-        matrixStack.scale(scale * 0.5F, scale * 0.5F, 0);
-
         /* Font Renderer */
+        PoseStack matrixStack = event.getMatrixStack();
+        IRenderer2D renderer = this.armor.getRenderer();
         IFontRenderer fontRenderer = this.armor.getFontRenderer();
-        fontRenderer.begin(matrixStack);
+        renderer.begin(matrixStack, fontRenderer);
+
+        /* Matrix Stack */
+        matrixStack.pushPose();
+        matrixStack.translate(startX, startY + this.yOffset.getValue(), 1);
+        matrixStack.scale(scale * 0.5F, scale * 0.5F, 1);
 
         /* Player Armor Slots (Clone & Reverse) */
         Inventory inventory = player.getInventory();
@@ -144,7 +148,7 @@ public class Durability101 implements EventListener {
             fontRenderer.drawString(text, x, y, color, true);
         }
 
-        fontRenderer.end();
+        renderer.end();
         matrixStack.popPose();
     }
 

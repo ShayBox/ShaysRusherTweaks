@@ -37,8 +37,8 @@ public class NightVision implements EventListener {
         return this.nightVisionSetting.getValue() || this.isApplied;
     }
 
-    @Subscribe
     @SuppressWarnings("unused")
+    @Subscribe
     private void onPlayerUpdate(EventPlayerUpdate event) {
         LocalPlayer player = event.getPlayer();
         boolean hasNightVision = player.hasEffect(MobEffects.NIGHT_VISION);

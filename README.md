@@ -10,12 +10,15 @@ My personal RusherHack tweaks plugin
 - AutoArmor:
   - RepairPriority - Prioritize low durability armor with mending
   - GoldenPriority - Prioritize one piece of golden armor for piglins
-  - PriorityBinds - Key binds for priority setting toggles
+  - Priority Binds - Key binds for priority setting toggles
 - AutoWalk/ElytraFly/RotationLock:
   - PauseOnUse - Pause modules while using/eating
   - AutoRestart - Automatically restart **packet** fly if your speed drops (Requested by _0lw)
 - Armor HUD:
   - Durability101 - Durability101 Mod
+- Elytra Tweaks:
+  - GrimDisabler AutoChestplate - Automatically disable AutoArmor ElytraPriority
+  - GrimDisabler Binds - Key binds for GrimDisabler
 - FullBright:
   - NightVision - Client side night vision effect (for shaders)
 

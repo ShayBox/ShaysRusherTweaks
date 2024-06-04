@@ -26,6 +26,7 @@ public class Main extends Plugin {
     private final EventListener armorPriority = new ArmorPriority();
     private final EventListener autoRestart = new AutoRestart();
     private final EventListener durability101 = new Durability101();
+    private final EventListener grimDisabler = new GrimDisabler();
     private final EventListener nightVision = new NightVision();
     private final EventListener pauseOnUse = new PauseOnUse();
 
@@ -35,6 +36,7 @@ public class Main extends Plugin {
         this.eventBus.subscribe(this.armorPriority);
         this.eventBus.subscribe(this.autoRestart);
         this.eventBus.subscribe(this.durability101);
+        this.eventBus.subscribe(this.grimDisabler);
         this.eventBus.subscribe(this.nightVision);
         this.eventBus.subscribe(this.pauseOnUse);
     }
@@ -44,6 +46,7 @@ public class Main extends Plugin {
         this.eventBus.unsubscribe(this.armorPriority);
         this.eventBus.unsubscribe(this.autoRestart);
         this.eventBus.unsubscribe(this.durability101);
+        this.eventBus.unsubscribe(this.grimDisabler);
         this.eventBus.unsubscribe(this.nightVision);
         this.eventBus.unsubscribe(this.pauseOnUse);
     }
