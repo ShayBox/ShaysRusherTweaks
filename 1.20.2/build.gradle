@@ -1,0 +1,75 @@
+plugins {
+	id 'fabric-loom' version '1.6-SNAPSHOT'
+}
+
+version = project.plugin_version
+group = project.maven_group
+
+base {
+	archivesName = project.archives_base_name
+}
+
+configurations {
+	rusherhackApi
+	rusherhackApi.canBeResolved(true)
+	compileOnly.extendsFrom(rusherhackApi)
+}
+
+repositories {
+	maven {
+		name = 'rusherhack'
+		url = 'https://maven.rusherhack.org/releases'
+// 		url = 'https://maven.rusherhack.org/snapshots'
+	}
+	maven {
+		name = 'ParchmentMC'
+		url = 'https://maven.parchmentmc.org'
+	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings loom.layered() {
+		officialMojangMappings()
+		parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_version}@zip")
+	}
+
+	rusherhackApi "org.rusherhack:rusherhack-api:${project.minecraft_version}-SNAPSHOT"
+}
+
+loom {
+	for (final def f in zipTree(this.project.configurations.rusherhackApi.singleFile)) {
+		if (f.name == "rusherhack.accesswidener") {
+			accessWidenerPath = f
+		}
+	}
+
+	runConfigs.configureEach {
+		ideConfigGenerated = false
+	}
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("rusherhack-plugin.json") {
+		expand "version": project.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 17
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+}
+
+jar {
+	manifest.attributes.clear()
+
+	from("LICENSE") {
+		rename { "${it}_${project.base.archivesName.get()}"}
+	}
+}
