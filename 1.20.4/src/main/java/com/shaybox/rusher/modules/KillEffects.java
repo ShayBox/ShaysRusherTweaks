@@ -24,7 +24,7 @@ public class KillEffects extends ToggleableModule {
     /* Minecraft */
     private final Minecraft minecraft = Minecraft.getInstance();
 
-    /* RusherHackAPI & Settings */
+    /* Settings */
     private final BooleanSetting self = new BooleanSetting("Self", "Only when you kill", false);
 
     /* Previous State */
@@ -36,20 +36,19 @@ public class KillEffects extends ToggleableModule {
         this.registerSettings(this.self);
     }
 
-    @SuppressWarnings("unused")
     @Subscribe
     private void onPacket(EventPacket.Receive event) {
-        Packet<?> packet = event.getPacket();
+        final Packet<?> packet = event.getPacket();
 
         if (packet instanceof ClientboundDamageEventPacket damagePacket) {
             assert this.minecraft.level != null;
 
-            DamageSource source = damagePacket.getSource(this.minecraft.level);
+            final DamageSource source = damagePacket.getSource(this.minecraft.level);
             if (!source.is(DamageTypes.PLAYER_ATTACK) && !source.is(DamageTypes.PLAYER_EXPLOSION)) return;
 
-            Entity entity = this.minecraft.level.getEntity(damagePacket.entityId());
+            final Entity entity = this.minecraft.level.getEntity(damagePacket.entityId());
             if (entity instanceof Player) {
-                Entity attacker = this.minecraft.level.getEntity(damagePacket.sourceCauseId());
+                final Entity attacker = this.minecraft.level.getEntity(damagePacket.sourceCauseId());
                 this.playerAttacker.put(entity, attacker);
             }
         } else if (packet instanceof ClientboundEntityEventPacket entityPacket) {
@@ -58,20 +57,20 @@ public class KillEffects extends ToggleableModule {
             byte eventId = entityPacket.getEventId();
             if (eventId != 3) return;
 
-            Entity entity = entityPacket.getEntity(this.minecraft.level);
+            final Entity entity = entityPacket.getEntity(this.minecraft.level);
             boolean isPlayer = entity instanceof Player;
             if (!isPlayer) return;
 
-            Entity attacker = this.playerAttacker.get(entity);
+            final Entity attacker = this.playerAttacker.get(entity);
             if (attacker == null) return;
             else this.playerAttacker.remove(entity);
 
             /* Only show lightning when the local player is the attacker */
             if (this.self.getValue() && attacker != this.minecraft.player) return;
 
-            LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, this.minecraft.level);
-            lightning.setPos(entity.position());
-            this.minecraft.level.addEntity(lightning);
+            final LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, this.minecraft.level);
+            lightningBolt.setPos(entity.position());
+            this.minecraft.level.addEntity(lightningBolt);
         }
     }
 

@@ -71,9 +71,9 @@ public class ArmorPriority implements EventListener {
 
     @Override
     public boolean isListening() {
-        IKey elytraBind = this.elytraPriorityBind.getValue();
-        IKey repairBind = this.repairPriorityBind.getValue();
-        IKey goldenBind = this.goldenPriorityBind.getValue();
+        final IKey elytraBind = this.elytraPriorityBind.getValue();
+        final IKey repairBind = this.repairPriorityBind.getValue();
+        final IKey goldenBind = this.goldenPriorityBind.getValue();
 
         return this.isPaused || this.autoArmor.isToggled() && (
                 (this.repairPriority.getValue() || this.goldenPriority.getValue()) || (
@@ -84,7 +84,6 @@ public class ArmorPriority implements EventListener {
         );
     }
 
-    @SuppressWarnings("unused")
     @Subscribe
     private void onUpdate(EventUpdate event) {
         if (minecraft.screen != null) return;
@@ -94,20 +93,18 @@ public class ArmorPriority implements EventListener {
         Main.handleKey(this.goldenPriorityBind::getValue, this.isGoldenDown, (value) -> this.isGoldenDown = value, this.goldenPriority::getValue, this.goldenPriority::setValue);
     }
 
-    @SuppressWarnings("unused")
     @Subscribe
     private void onPlayerUpdate(EventPlayerUpdate event) {
-        LocalPlayer player = event.getPlayer();
-        Inventory inventory = player.getInventory();
+        final LocalPlayer player = event.getPlayer();
+        final Inventory inventory = player.getInventory();
 
         /* Prevent moving items in other containers */
         if (minecraft.screen instanceof InventoryScreen) if (!this.inventory.getValue()) return;
         else if (minecraft.screen instanceof AbstractContainerScreen) return;
 
         /* There can only be one enabled at a time */
-        boolean prioritizeRepair = this.repairPriority.getValue();
-        boolean prioritizeGolden = this.goldenPriority.getValue();
-
+        final boolean prioritizeRepair = this.repairPriority.getValue();
+        final boolean prioritizeGolden = this.goldenPriority.getValue();
         if (prioritizeRepair || prioritizeGolden) {
             if (!isPaused) {
                 isPaused = true;

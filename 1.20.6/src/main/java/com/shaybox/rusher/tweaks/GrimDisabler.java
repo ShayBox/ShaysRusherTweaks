@@ -42,12 +42,11 @@ public class GrimDisabler implements EventListener {
 
     @Override
     public boolean isListening() {
-        IKey grimDisablerBind = this.grimDisablerBind.getValue();
+        final IKey grimDisablerBind = this.grimDisablerBind.getValue();
 
         return this.grimDisabler.getValue() | this.isGrimDisablerDown || grimDisablerBind.isKeyDown() || this.isRunning;
     }
 
-    @SuppressWarnings("unused")
     @Subscribe
     private void onUpdate(EventUpdate event) {
         if (this.autoChestplate.getValue()) {

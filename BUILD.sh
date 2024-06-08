@@ -42,7 +42,7 @@ do
         version=$(basename "$jar_file" | grep -oP 'shays-rusher-plugin-\K[0-9]+\.[0-9]+\.[0-9]+')
 
         # Move the built JAR file to the specified directory
-        mv build/libs/shays-rusher-plugin-"${version}".jar ../Build/ShaysRusherPlugin-"${dir,,}-${version}".jar
+        cp build/libs/shays-rusher-plugin-"${version}".jar ../Build/ShaysRusherPlugin-"${dir,,}-${version}".jar
 
         # Cleanup
         rm -rf .gradle .idea .vscode logs run

@@ -64,12 +64,11 @@ public class AutoRestart implements EventListener {
 
     @Override
     public boolean isListening() {
-        IKey autoRestartBind = this.autoRestartBind.getValue();
+        final IKey autoRestartBind = this.autoRestartBind.getValue();
 
         return this.elytraFly.isToggled() || this.autoRestart.getValue() || this.isAutoRestartDown || autoRestartBind.isKeyDown();
     }
 
-    @SuppressWarnings("unused")
     @Subscribe
     private void onUpdate(EventUpdate event) {
         if (minecraft.screen != null) return;
@@ -77,11 +76,10 @@ public class AutoRestart implements EventListener {
         Main.handleKey(this.autoRestartBind::getValue, this.isAutoRestartDown, (value) -> this.isAutoRestartDown = value, this.autoRestart::getValue, this.autoRestart::setValue);
     }
 
-    @SuppressWarnings("unused")
     @Subscribe
     private void onPlayerUpdate(EventPlayerUpdate event) {
-        LocalPlayer player = event.getPlayer();
-        Vec3 position = player.position();
+        final LocalPlayer player = event.getPlayer();
+        final Vec3 position = player.position();
 
         if (!this.mode.getDisplayValue().equals("Packet")) {
             this.autoRestart.setValue(false);
@@ -89,10 +87,10 @@ public class AutoRestart implements EventListener {
         }
 
         /* Calculate Player Speed */
-        double dx = position.x - player.xOld;
-        double dy = position.y - player.yOld;
-        double dz = position.z - player.zOld;
-        double speed = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        final double dx = position.x - player.xOld;
+        final double dy = position.y - player.yOld;
+        final double dz = position.z - player.zOld;
+        final double speed = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
         /* Update speed buffer */
         this.speedBuffer.offer(speed);
@@ -101,7 +99,7 @@ public class AutoRestart implements EventListener {
         }
 
         /* Calculate Average Speed */
-        double averageSpeed = speedBuffer.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+        final double averageSpeed = speedBuffer.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
 
         /* Make sure modules do not de-sync */
         if (!this.autoRestart.getValue()) {

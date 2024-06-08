@@ -20,10 +20,12 @@ public class Main extends Plugin {
     /* ModuleManager & Modules */
     private final IFeatureManager<IModule> moduleManager = RusherHackAPI.getModuleManager();
     private final ToggleableModule killEffects = new KillEffects();
+    private final ToggleableModule spawnLocations = new SpawnLocations();
 
     /* EventBus & Listeners */
     private final IEventBus eventBus = RusherHackAPI.getEventBus();
     private final EventListener armorPriority = new ArmorPriority();
+    private final EventListener autoDeploy = new AutoDeploy();
     private final EventListener autoRestart = new AutoRestart();
     private final EventListener durability101 = new Durability101();
     private final EventListener grimDisabler = new GrimDisabler();
@@ -33,7 +35,9 @@ public class Main extends Plugin {
     @Override
     public void onLoad() {
         this.moduleManager.registerFeature(this.killEffects);
+        this.moduleManager.registerFeature(this.spawnLocations);
         this.eventBus.subscribe(this.armorPriority);
+        this.eventBus.subscribe(this.autoDeploy);
         this.eventBus.subscribe(this.autoRestart);
         this.eventBus.subscribe(this.durability101);
         this.eventBus.subscribe(this.grimDisabler);
@@ -44,6 +48,7 @@ public class Main extends Plugin {
     @Override
     public void onUnload() {
         this.eventBus.unsubscribe(this.armorPriority);
+        this.eventBus.unsubscribe(this.autoDeploy);
         this.eventBus.unsubscribe(this.autoRestart);
         this.eventBus.unsubscribe(this.durability101);
         this.eventBus.unsubscribe(this.grimDisabler);

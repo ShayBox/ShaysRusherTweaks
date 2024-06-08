@@ -5,6 +5,7 @@ My personal RusherHack tweaks plugin
 
 ## Modules
 - KillEffects - Shows a client side lightning strike where players die (Requested by 0x85)
+- SpawnLocations - Shows a box where entites spawn
 
 ## Tweaks
 - AutoArmor:
@@ -17,6 +18,7 @@ My personal RusherHack tweaks plugin
 - Armor HUD:
   - Durability101 - Durability101 Mod
 - Elytra Tweaks:
+  - AutoDeploy - Automatically equip and deploy elytra when falling
   - GrimDisabler AutoChestplate - Automatically disable AutoArmor ElytraPriority
   - GrimDisabler Binds - Key binds for GrimDisabler
 - FullBright:

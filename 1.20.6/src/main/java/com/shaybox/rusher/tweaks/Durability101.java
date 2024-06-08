@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -66,28 +65,27 @@ public class Durability101 implements EventListener {
         return this.armor.isToggled() && this.durability101.getValue();
     }
 
-    @SuppressWarnings("unused")
     @Subscribe(priority = -10000, stage = Stage.ALL)
     private void onRender2D(EventRender2D event) {
-        Stage stage = event.getStage();
+        final Stage stage = event.getStage();
         if (this.minecraft.screen == this.hudEditorScreen) {
             if (stage != Stage.POST) return;
         } else if (stage != Stage.ON) return;
 
-        LocalPlayer player = this.minecraft.player;
+        final LocalPlayer player = this.minecraft.player;
         if (player == null || debugOverlay.showDebugScreen()) {
             return;
         }
 
         /* Armor HUD Element: Position, Size, and Scale */
-        float scale = (float) this.armor.getScale();
-        double startX = this.armor.getStartX(), startY = this.armor.getStartY();
-        double width = this.armor.getWidth(), height = this.armor.getHeight();
+        final float scale = (float) this.armor.getScale();
+        final double startX = this.armor.getStartX(), startY = this.armor.getStartY();
+        final double width = this.armor.getWidth(), height = this.armor.getHeight();
 
         /* Font Renderer */
-        PoseStack matrixStack = event.getMatrixStack();
-        IRenderer2D renderer = this.armor.getRenderer();
-        IFontRenderer fontRenderer = this.armor.getFontRenderer();
+        final PoseStack matrixStack = event.getMatrixStack();
+        final IRenderer2D renderer = this.armor.getRenderer();
+        final IFontRenderer fontRenderer = this.armor.getFontRenderer();
         renderer.begin(matrixStack, fontRenderer);
 
         /* Matrix Stack */
@@ -96,24 +94,21 @@ public class Durability101 implements EventListener {
         matrixStack.scale(scale * 0.5F, scale * 0.5F, 1);
 
         /* Player Armor Slots (Clone & Reverse) */
-        Inventory inventory = player.getInventory();
-        ArrayList<ItemStack> armorSlots = new ArrayList<>(inventory.armor);
+        final Inventory inventory = player.getInventory();
+        final ArrayList<ItemStack> armorSlots = new ArrayList<>(inventory.armor);
         Collections.reverse(armorSlots);
 
         for (int slot = 0; slot < armorSlots.size(); slot++) {
-            ItemStack itemStack = armorSlots.get(slot);
+            final ItemStack itemStack = armorSlots.get(slot);
             if (!itemStack.isDamaged()) {
                 continue;
             }
 
             /* Damage & Color */
-            int maxDamage = itemStack.getMaxDamage();
-            int damage = itemStack.getDamageValue();
-            int color = itemStack.getBarColor();
-            int unbreaking = 0;
-            if (this.unbreaking.getValue()) {
-                unbreaking = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, itemStack);
-            }
+            final int maxDamage = itemStack.getMaxDamage();
+            final int damage = itemStack.getDamageValue();
+            final int color = itemStack.getBarColor();
+            final int unbreaking = this.unbreaking.getValue() ? EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, itemStack) : 0;
 
             /* Text Offset */
             String text = format((maxDamage - damage) * (unbreaking + 1));
@@ -126,20 +121,7 @@ public class Durability101 implements EventListener {
                 x += (slot * 38) + textOffset + 16;
                 y += 18;
 
-                boolean isStable203 = this.watermark.getText().endsWith("v2.0.3");
-                if (isStable203 && this.hotbarLock.getValue() && this.autoAdjust.getValue()) {
-                    if (player.showVehicleHealth() && player.getVehicle() instanceof LivingEntity living) {
-                        if (living.getMaxHealth() > 20) y -= 20;
-                    } else if (player.isCreative()) {
-                        y += 34;
-                    } else if (player.isUnderWater()) {
-                        y -= 20;
-                    }
-                }
-
-                if (!this.durability.getDisplayValue().equals("Off")) {
-                    y += 20;
-                }
+                if (!this.durability.getDisplayValue().equals("Off")) y += 20;
             } else {
                 x += textOffset + 16;
                 y += (slot * 38) + 18;
@@ -153,7 +135,7 @@ public class Durability101 implements EventListener {
     }
 
     public String format(float number) {
-        DecimalFormat decimalFormat = new DecimalFormat("0.#");
+        final DecimalFormat decimalFormat = new DecimalFormat("0.#");
 
         if (number >= 1000000000) return decimalFormat.format(number / 1000000000) + "b";
         if (number >= 1000000) return decimalFormat.format(number / 1000000) + "m";

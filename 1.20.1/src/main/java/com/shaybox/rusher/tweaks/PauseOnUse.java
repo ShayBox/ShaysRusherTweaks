@@ -46,10 +46,9 @@ public class PauseOnUse implements EventListener {
         return this.pauseAutoWalk.getValue() || this.pauseElytraFly.getValue() || this.pauseRotationLock.getValue() || this.isPaused;
     }
 
-    @SuppressWarnings("unused")
     @Subscribe
     private void onPlayerUpdate(EventPlayerUpdate event) {
-        LocalPlayer player = event.getPlayer();
+        final LocalPlayer player = event.getPlayer();
 
         if (player.isUsingItem()) {
             if (!this.isPaused) {

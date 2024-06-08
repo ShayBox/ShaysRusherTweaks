@@ -37,13 +37,12 @@ public class NightVision implements EventListener {
         return this.nightVisionSetting.getValue() || this.isApplied;
     }
 
-    @SuppressWarnings("unused")
     @Subscribe
     private void onPlayerUpdate(EventPlayerUpdate event) {
-        LocalPlayer player = event.getPlayer();
-        boolean hasNightVision = player.hasEffect(MobEffects.NIGHT_VISION);
-        boolean isFullBright = this.fullBright.isToggled();
-        boolean isNightVision = this.nightVisionSetting.getValue();
+        final LocalPlayer player = event.getPlayer();
+        final boolean isFullBright = this.fullBright.isToggled();
+        final boolean isNightVision = this.nightVisionSetting.getValue();
+        final boolean hasNightVision = player.hasEffect(MobEffects.NIGHT_VISION);
 
         if (!hasNightVision && (isFullBright && isNightVision)) {
             isApplied = true;
