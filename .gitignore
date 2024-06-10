@@ -1,4 +1,4 @@
-.gradle/
-.idea/
-.vscode/
-build/
+**/.gradle
+**/.idea
+**/.vscode
+**/build

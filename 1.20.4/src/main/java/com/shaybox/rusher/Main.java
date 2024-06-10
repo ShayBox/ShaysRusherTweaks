@@ -19,6 +19,7 @@ public class Main extends Plugin {
 
     /* ModuleManager & Modules */
     private final IFeatureManager<IModule> moduleManager = RusherHackAPI.getModuleManager();
+    private final ToggleableModule antiProne = new AntiProne();
     private final ToggleableModule killEffects = new KillEffects();
     private final ToggleableModule spawnLocations = new SpawnLocations();
 
@@ -34,8 +35,10 @@ public class Main extends Plugin {
 
     @Override
     public void onLoad() {
+        this.moduleManager.registerFeature(this.antiProne);
         this.moduleManager.registerFeature(this.killEffects);
         this.moduleManager.registerFeature(this.spawnLocations);
+
         this.eventBus.subscribe(this.armorPriority);
         this.eventBus.subscribe(this.autoDeploy);
         this.eventBus.subscribe(this.autoRestart);

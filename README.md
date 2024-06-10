@@ -4,6 +4,7 @@
 My personal RusherHack tweaks plugin
 
 ## Modules
+- AntiProne - Automatically break the block at your head when the block at your feet is being mined
 - KillEffects - Shows a client side lightning strike where players die (Requested by 0x85)
 - SpawnLocations - Shows a box where entites spawn
 
@@ -30,6 +31,6 @@ My personal RusherHack tweaks plugin
 - Do **NOT** leave your computer, use AutoTotem, wear gold armor, and set beds or pearls!
 
 ## Install:
-- [Download]
+- [Download](https://github.com/ShayBox/ShaysRusherTweaks/releases/latest)
 - Move to `.minecraft/rusherhack/plugins` (Create)
 - Add `-Drusherhack.enablePlugins=true` to Java Arguments

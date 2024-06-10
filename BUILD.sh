@@ -4,8 +4,8 @@
 trap exit 1 SIGINT
 
 # Cleanup
-rm -r Build
-mkdir Build
+rm -r build
+mkdir build
 
 # Find all subdirectories containing gradlew script
 for dir in */
@@ -42,7 +42,7 @@ do
         version=$(basename "$jar_file" | grep -oP 'shays-rusher-plugin-\K[0-9]+\.[0-9]+\.[0-9]+')
 
         # Move the built JAR file to the specified directory
-        cp build/libs/shays-rusher-plugin-"${version}".jar ../Build/ShaysRusherPlugin-"${dir,,}-${version}".jar
+        cp build/libs/shays-rusher-plugin-"${version}".jar ../build/ShaysRusherPlugin-"${dir,,}-${version}".jar
 
         # Cleanup
         rm -rf .gradle .idea .vscode logs run
