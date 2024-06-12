@@ -4,7 +4,7 @@
 My personal RusherHack tweaks plugin
 
 ## Modules
-- AntiProne[^_0lw] - Automatically mines your head when your feet gets mined.
+- AntiCrawl[^_0lw] - Automatically keeps you from going crawl by breaking blocks.
 - KillEffects[^0x85] - Shows a client side lightning strike when players die.
 - SpawnLocations - Shows a cube where entities of different types spawned.
 

@@ -19,7 +19,7 @@ public class Main extends Plugin {
 
     /* ModuleManager & Modules */
     private final IFeatureManager<IModule> moduleManager = RusherHackAPI.getModuleManager();
-    private final ToggleableModule antiProne = new AntiProne();
+    private final ToggleableModule antiProne = new AntiCrawl();
     private final ToggleableModule killEffects = new KillEffects();
     private final ToggleableModule spawnLocations = new SpawnLocations();
 
