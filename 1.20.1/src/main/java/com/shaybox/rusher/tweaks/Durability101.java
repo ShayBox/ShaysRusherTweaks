@@ -12,7 +12,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import org.rusherhack.client.api.RusherHackAPI;
 import org.rusherhack.client.api.events.render.EventRender2D;
 import org.rusherhack.client.api.feature.hud.HudElement;
-import org.rusherhack.client.api.feature.hud.TextHudElement;
+import org.rusherhack.client.api.feature.module.IModule;
+import org.rusherhack.client.api.feature.module.ToggleableModule;
 import org.rusherhack.client.api.render.IRenderer2D;
 import org.rusherhack.client.api.render.font.IFontRenderer;
 import org.rusherhack.client.api.system.IHudManager;
@@ -20,6 +21,7 @@ import org.rusherhack.client.api.ui.theme.IThemeManager;
 import org.rusherhack.core.event.listener.EventListener;
 import org.rusherhack.core.event.stage.Stage;
 import org.rusherhack.core.event.subscribe.Subscribe;
+import org.rusherhack.core.feature.IFeatureManager;
 import org.rusherhack.core.setting.BooleanSetting;
 import org.rusherhack.core.setting.EnumSetting;
 import org.rusherhack.core.setting.NumberSetting;
@@ -36,22 +38,19 @@ public class Durability101 implements EventListener {
     /* RusherHackAPI Managers & Screens */
     private final IHudManager hudManager = RusherHackAPI.getHudManager();
     private final IThemeManager themeManager = RusherHackAPI.getThemeManager();
+    private final IFeatureManager<IModule> moduleManager = RusherHackAPI.getModuleManager();
     private final Screen hudEditorScreen = themeManager.getHudEditorScreen();
+    private final ToggleableModule hudModule = (ToggleableModule) moduleManager.getFeature("Hud").orElseThrow();
 
     /* Armor Hud Element & Settings */
     private final HudElement armor = hudManager.getFeature("Armor").orElseThrow();
     private final EnumSetting<?> axis = (EnumSetting<?>) armor.getSetting("Axis");
     private final EnumSetting<?> durability = (EnumSetting<?>) armor.getSetting("Durability");
-    private final BooleanSetting hotbarLock = (BooleanSetting) armor.getSetting("HotbarLock");
-    private final BooleanSetting autoAdjust = (BooleanSetting) hotbarLock.getSubSetting("AutoAdjust");
 
     /* Custom Settings */
     private final BooleanSetting durability101 = new BooleanSetting("Durability101", "Durability101 Mod for Armor HUD", false);
     private final BooleanSetting unbreaking = new BooleanSetting("Unbreaking", "Estimates Unbreaking Durability", false);
     private final NumberSetting<Integer> yOffset = new NumberSetting<>("Y Offset", "Manual Y Offset", 0, -15, 15);
-
-    /* Temporary */
-    private final TextHudElement watermark = (TextHudElement) hudManager.getFeature("Watermark").orElseThrow();
 
     /* Initialize */
     public Durability101() {
@@ -61,7 +60,7 @@ public class Durability101 implements EventListener {
 
     @Override
     public boolean isListening() {
-        return this.armor.isToggled() && this.durability101.getValue();
+        return this.hudModule.isToggled() && this.armor.isToggled() && this.durability101.getValue();
     }
 
     @Subscribe(priority = -10000, stage = Stage.ALL)

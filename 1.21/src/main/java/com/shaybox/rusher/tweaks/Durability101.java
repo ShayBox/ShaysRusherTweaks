@@ -4,9 +4,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import org.rusherhack.client.api.RusherHackAPI;
@@ -72,9 +76,10 @@ public class Durability101 implements EventListener {
         } else if (stage != Stage.ON) return;
 
         final LocalPlayer player = this.minecraft.player;
-        if (player == null || debugOverlay.showDebugScreen()) {
-            return;
-        }
+        if (player == null || debugOverlay.showDebugScreen()) return;
+
+        final ClientLevel level = this.minecraft.level;
+        if (level == null) return;
 
         /* Armor HUD Element: Position, Size, and Scale */
         final float scale = (float) this.armor.getScale();
@@ -97,6 +102,11 @@ public class Durability101 implements EventListener {
         final ArrayList<ItemStack> armorSlots = new ArrayList<>(inventory.armor);
         Collections.reverse(armorSlots);
 
+        final Holder.Reference<Enchantment> unbreaking = level
+                .registryAccess()
+                .registryOrThrow(Registries.ENCHANTMENT)
+                .getHolderOrThrow(Enchantments.UNBREAKING);
+
         for (int slot = 0; slot < armorSlots.size(); slot++) {
             final ItemStack itemStack = armorSlots.get(slot);
             if (!itemStack.isDamaged()) {
@@ -104,13 +114,14 @@ public class Durability101 implements EventListener {
             }
 
             /* Damage & Color */
+
+            final int unbreakingLevel = this.unbreaking.getValue() ? EnchantmentHelper.getItemEnchantmentLevel(unbreaking, itemStack) : 0;
             final int maxDamage = itemStack.getMaxDamage();
             final int damage = itemStack.getDamageValue();
             final int color = itemStack.getBarColor();
-            final int unbreaking = this.unbreaking.getValue() ? EnchantmentHelper.getItemEnchantmentLevel(Enchantments.UNBREAKING, itemStack) : 0;
 
             /* Text Offset */
-            String text = format((maxDamage - damage) * (unbreaking + 1));
+            String text = format((maxDamage - damage) * (unbreakingLevel + 1));
             double textWidth = fontRenderer.getStringWidth(text);
             double textOffset = 1 + textWidth / 2 - textWidth;
 
